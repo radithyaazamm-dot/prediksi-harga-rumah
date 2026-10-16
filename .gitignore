@@ -1,0 +1,16 @@
+# Folder virtual environment (jangan di-upload, ukurannya besar)
+.venv/
+venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# File OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
