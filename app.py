@@ -370,7 +370,7 @@ with tab_ringkasan:
         "UmurRumah": "Umur",
         "RataRumah": "Kamar",
         "RataPenghuni": "Penghuni",
-        "RataKamarMandi": "Kamar mandi",
+        "RataKamarTidur": "Kamar tidur",
         "Lintang": "Lintang",
         "Bujur": "Bujur",
         "Harga": "HARGA",
@@ -393,13 +393,13 @@ with tab_ringkasan:
     st.caption("Lima baris pertama dari data yang sedang difilter.")
 
     contoh = terfilter[["Pendapatan", "UmurRumah", "RataRumah",
-                        "RataPenghuni", "RataKamarMandi", "Harga"]].head(5)
+                        "RataPenghuni", "RataKamarTidur", "Harga"]].head(5)
     st.dataframe(contoh, width="stretch", hide_index=True)
 
     st.divider()
     st.subheader("5. Proses Pembersihan Data")
     st.caption(
-        "Beberapa baris tidak masuk akal (misalnya rumah tanpa kamar mandi) "
+        "Beberapa baris tidak masuk akal (misalnya rumah tanpa kamar tidur) "
         "dan dibuang agar tidak mengacaukan model."
     )
 
@@ -468,13 +468,13 @@ with tab_prediksi:
                 help=ml.KETERANGAN["RataPenghuni"],
             )
 
-            input_kamar_mandi = st.slider(
-                "Rata-rata jumlah kamar mandi",
+            input_kamar_tidur = st.slider(
+                "Rata-rata jumlah kamar tidur",
                 min_value=0.5,
                 max_value=5.0,
                 value=1.0,
                 step=0.1,
-                help=ml.KETERANGAN["RataKamarMandi"],
+                help=ml.KETERANGAN["RataKamarTidur"],
             )
 
         submitted = st.form_submit_button("🔮 Prediksi Harga", type="primary")
@@ -489,7 +489,7 @@ with tab_prediksi:
             "UmurRumah": input_umur,
             "RataRumah": input_kamar,
             "RataPenghuni": input_penghuni,
-            "RataKamarMandi": input_kamar_mandi,
+            "RataKamarTidur": input_kamar_tidur,
         }])
 
         pred_linear = model["linear"].predict(input_baru)[0] * 100_000
@@ -730,7 +730,7 @@ with st.expander("📚 Metodologi & Penjelasan"):
         Pembersihan dilakukan dalam dua tahap.
 
         **Tahap 1 — aturan fisik.** Baris yang isinya tidak mungkin
-        terjadi dibuang: rumah dengan kurang dari 1 kamar, lebih dari 20 kamar, lebih dari 6 kamar mandi,
+        terjadi dibuang: rumah dengan kurang dari 1 kamar, lebih dari 20 kamar, lebih dari 6 kamar tidur,
         dan lebih dari 8 penghuni.
 
         **Tahap 2 — outlier dengan metode IQR.** Dihitung
@@ -738,9 +738,9 @@ with st.expander("📚 Metodologi & Penjelasan"):
         lalu semua nilai di luar batas itu dibuang. Metode ini
         diterapkan pada kolom jumlah penghuni.
 
-        Catatan: kolom "RataKamarMandi" sengaja tidak ikut dibersihkan,
+        Catatan: kolom "RataKamarTidur" sengaja tidak ikut dibersihkan,
         meskipun ada nilainya di bawah 1. Kolom itu berisi rata-rata
-        jumlah kamar mandi per rumah dalam satu wilayah, sehingga di
+        jumlah kamar tidur per rumah dalam satu wilayah, sehingga di
         wilayah padat penduduk nilai rata-ratanya memang bisa di bawah 1.
         Itu wajar, bukan kesalahan data.
 

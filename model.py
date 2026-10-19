@@ -44,7 +44,7 @@ FITUR = [
     "UmurRumah",
     "RataRumah",
     "RataPenghuni",
-    "RataKamarMandi",
+    "RataKamarTidur",
 ]
 
 # Target = hal yang ingin kita prediksi
@@ -56,7 +56,7 @@ GANTI_NAMA = {
     "HouseAge": "UmurRumah",
     "AveRooms": "RataRumah",
     "AveOccup": "RataPenghuni",
-    "AveBedrms": "RataKamarMandi",
+    "AveBedrms": "RataKamarTidur",
     "Latitude": "Lintang",
     "Longitude": "Bujur",
     "MedHouseVal": "Harga",
@@ -68,7 +68,7 @@ KETERANGAN = {
     "UmurRumah": "Umur median rumah (tahun)",
     "RataRumah": "Rata-rata jumlah kamar per rumah",
     "RataPenghuni": "Rata-rata jumlah penghuni per rumah",
-    "RataKamarMandi": "Rata-rata jumlah kamar mandi",
+    "RataKamarTidur": "Rata-rata jumlah kamar tidur",
     "Harga": "Harga median rumah (satuan: $100.000)",
 }
 
@@ -113,7 +113,7 @@ def bersihkan_data(df: pd.DataFrame) -> tuple:
       (authentik mustahil terjadi, jadi dibuang)
          - Rumah dengan 0 kamar
          - Rumah dengan lebih dari 20 kamar
-         - Rumah dengan lebih dari 6 kamar mandi
+         - Rumah dengan lebih dari 6 kamar tidur
          - Rumah dengan lebih dari 8 penghuni
 
     2. Metode IQR (Interquartile Range)
@@ -124,8 +124,8 @@ def bersihkan_data(df: pd.DataFrame) -> tuple:
        Diterapkan pada kolom "RataPenghuni".
 
     Catatan penting:
-       Angka "RataKamarMandi" itu RATA-RATA per rumah dalam satu
-       wilayah, bukan jumlah kamar mandi satu rumah. Karena itu
+       Angka "RataKamarTidur" itu RATA-RATA per rumah dalam satu
+       wilayah, bukan jumlah kamar tidur satu rumah. Karena itu
        ada wilayah yang rata-ratanya di bawah 1 dan itu WAJAR,
        bukan data salah. Jadi angka itu tidak ikut dihapus.
 
@@ -142,7 +142,7 @@ def bersihkan_data(df: pd.DataFrame) -> tuple:
     aturan_fisik = [
         ("Rumah minimal 1 kamar", "RataRumah", "ge", 1),
         ("Rumah maksimal 20 kamar", "RataRumah", "le", 20),
-        ("Kamar mandi maksimal 6 per rumah", "RataKamarMandi", "le", 6),
+        ("Kamar tidur maksimal 6 per rumah", "RataKamarTidur", "le", 6),
         ("Penghuni maksimal 8 per rumah", "RataPenghuni", "le", 8),
     ]
 
